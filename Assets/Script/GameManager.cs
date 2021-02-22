@@ -22,7 +22,7 @@ Win - 333 - ($2x2) = $4 - Coin 2
     public Roll[] rolls;
     public bool check;
     public GameObject prefab;
-    public Transform spaw1, spaw2;
+    public Transform spaw1;
     public int winPrize()
     {
         int prize;
@@ -31,21 +31,15 @@ Win - 333 - ($2x2) = $4 - Coin 2
             if (rolls[0].value == 1)
             {
                 prize = 2;
-
-                //Instantiate(prefab, new Vector3(Random.Range(-250, 250), spaw2.position.y, 0), Quaternion.identity);
             }
             else if (rolls[1].value == 2)
             {
                 prize = 18;
-                /*for(int i = 0;i <5; i++)
-                {
-                    StartCoroutine(inst((float)i));
-                }*/
+
             }
             else if (rolls[2].value == 3)
             {
                 prize = 4;
-                //StartCoroutine(inst(1));
             }
             else
                 prize = 0;
@@ -60,8 +54,8 @@ Win - 333 - ($2x2) = $4 - Coin 2
     public IEnumerator inst(float delay)
     {
         yield return new WaitForSeconds(delay/2);
-        GameObject rb1 = Instantiate(prefab, new Vector3(Random.Range(-250, 250),spaw1.position.y,0), Quaternion.identity);
-        GameObject rb2 = Instantiate(prefab, new Vector3(Random.Range(-250, 250), spaw2.position.y, 0), Quaternion.identity);
+        Instantiate(prefab, new Vector3(Random.Range(-3, 3),spaw1.position.y,0), Quaternion.identity);
+        Instantiate(prefab, new Vector3(Random.Range(-3, 3)-1f, spaw1.position.y, 0), Quaternion.identity);
     }
     void Start()
     {
@@ -79,27 +73,68 @@ Win - 333 - ($2x2) = $4 - Coin 2
         StartCoroutine(rolls[1].Rotate());
         StartCoroutine(rolls[2].Rotate());
     }
+    IEnumerator st(Roll rl, int value)
+    {
+        rl.rollStopped = false;
+        yield return new WaitForSeconds(1);
+        rl.value = value;
+        rl.rollStopped = true;
+    }
     void Update()
     {
-        /*if(Input.GetKeyDown(KeyCode.Space))
-            for (int i = 0; i < 5; i++)
-            {
-                StartCoroutine(inst((float)i));
-            }*/
+        if(Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            StartCoroutine(st(rolls[0], 1));
+            StartCoroutine(st(rolls[1], 1));
+            StartCoroutine(st(rolls[2], 1));
+            check = true;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            StartCoroutine(st(rolls[0], 2));
+            StartCoroutine(st(rolls[1], 2));
+            StartCoroutine(st(rolls[2], 2));
+            check = true;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            StartCoroutine(st(rolls[0], 3));
+            StartCoroutine(st(rolls[1], 3));
+            StartCoroutine(st(rolls[2], 3));
+            check = true;
+        }
+
         if (rolls[0].rollStopped && rolls[1].rollStopped && rolls[2].rollStopped)
         {
             if (check)
             {
                 UImanager.Ins.WinText.gameObject.SetActive(true);
                 cash.TotalCash += winPrize();
+                if (winPrize() != 0)
+                {
+                    if(rolls[0].value == 1)
+                    {
+                        Instantiate(prefab, new Vector3(Random.Range(-3, 3), spaw1.position.y, 0), Quaternion.identity);
+                    }
+                    else if(rolls[0].value == 2)
+                    {
+                        StartCoroutine(inst(1));
+                        StartCoroutine(inst(2));
+                        StartCoroutine(inst(3));
+                        StartCoroutine(inst(4));
+                        StartCoroutine(inst(5));
+                    }
+                    else if(rolls[0].value == 3)
+                    {
+                        StartCoroutine(inst(1));
+                    }
+                    UImanager.Ins.WinText.text = "You won " + winPrize() + " coin";
+                }
+                else
+                    UImanager.Ins.WinText.text = "You lose";
                 check = false;
             }
-            if (winPrize() != 0)
-            {
-                UImanager.Ins.WinText.text = "You won " + winPrize() + " coin";
-            }
-            else
-                UImanager.Ins.WinText.text = "You lose";
+            
 
         }
         else
@@ -111,7 +146,7 @@ Win - 333 - ($2x2) = $4 - Coin 2
         foreach (Roll roll in rolls)
         {
             if (!roll.rollStopped)
-                roll.valueDisplay.text = Random.Range(1, 3).ToString();
+                roll.valueDisplay.text = Random.Range(1, 4).ToString();
             else
                 roll.valueDisplay.text = roll.value.ToString();
         }

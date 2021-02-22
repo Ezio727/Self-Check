@@ -16,7 +16,7 @@ public class Roll
     {
         rollStopped = false;
         yield return new WaitForSeconds(delay);
-        value = Random.Range(1, 3);
+        value = Random.Range(1, 4);
         rollStopped = true;
     }
 }
