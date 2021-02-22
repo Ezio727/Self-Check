@@ -32,20 +32,20 @@ Win - 333 - ($2x2) = $4 - Coin 2
             {
                 prize = 2;
 
-                Instantiate(prefab, new Vector3(Random.Range(-250, 250), spaw2.position.y, 0), Quaternion.identity);
+                //Instantiate(prefab, new Vector3(Random.Range(-250, 250), spaw2.position.y, 0), Quaternion.identity);
             }
             else if (rolls[1].value == 2)
             {
                 prize = 18;
-                for(int i = 0;i <5; i++)
+                /*for(int i = 0;i <5; i++)
                 {
                     StartCoroutine(inst((float)i));
-                }
+                }*/
             }
             else if (rolls[2].value == 3)
             {
                 prize = 4;
-                StartCoroutine(inst(1));
+                //StartCoroutine(inst(1));
             }
             else
                 prize = 0;
@@ -81,11 +81,11 @@ Win - 333 - ($2x2) = $4 - Coin 2
     }
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        /*if(Input.GetKeyDown(KeyCode.Space))
             for (int i = 0; i < 5; i++)
             {
                 StartCoroutine(inst((float)i));
-            }
+            }*/
         if (rolls[0].rollStopped && rolls[1].rollStopped && rolls[2].rollStopped)
         {
             if (check)

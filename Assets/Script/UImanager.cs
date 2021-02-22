@@ -9,9 +9,12 @@ public class UImanager : Singleton<UImanager>
     public Text WinText;
     public void OnStart()
     {
-        GameManager.Ins.cash.TotalCash -= 1;
-        GameManager.Ins.onLeverPulled.Invoke();
-        GameManager.Ins.check = true;
+        if (GameManager.Ins.check == false)
+        {
+            GameManager.Ins.cash.TotalCash -= 1;
+            GameManager.Ins.onLeverPulled.Invoke();
+            GameManager.Ins.check = true;
+        }
     }
     void Start()
     {
